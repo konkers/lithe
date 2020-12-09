@@ -1,0 +1,5 @@
+[workspace]
+
+members = [
+    "targets/stm32f072-disco",
+]
