@@ -1,0 +1,47 @@
+[package]
+authors = ["konkers"]
+edition = "2018"
+readme = "README.md"
+name = "samd21-mini"
+version = "0.1.0"
+
+[features]
+semihosting = ["cortex-m-semihosting"]
+
+[dependencies]
+cortex-m = "0.6.0"
+cortex-m-rt = "0.6.10"
+cortex-m-rtic = { version = "0.5.5" }
+embedded-hal = "0.2.3"
+panic-halt = "0.2.0"
+panic-semihosting = "0.5"
+atsamd-hal = {version = "0.11", features = ["samd21g", "samd21g-rt", "unproven", "usb"]}
+usb-device = "0.2.5"
+usbd-hid = "0.4.4"
+
+# Optional depenencies
+cortex-m-semihosting = { version = "0.3.3", optional = true }
+
+# Uncomment for the panic example.
+# panic-itm = "0.4.1"
+
+# Uncomment for the allocator example.
+# alloc-cortex-m = "0.4.0"
+
+# Uncomment for the device example.
+# Update `memory.x`, set target to `thumbv7em-none-eabihf` in `.cargo/config`,
+# and then use `cargo build --examples device` to build it.
+# [dependencies.stm32f3]
+# features = ["stm32f303", "rt"]
+# version = "0.7.1"
+
+# this lets you use `cargo fix`!
+[[bin]]
+name = "samd21-mini"
+test = false
+bench = false
+
+[profile.release]
+codegen-units = 1 # better optimizations
+debug = true # symbols are nice and they don't increase the size on Flash
+lto = true # better optimizations

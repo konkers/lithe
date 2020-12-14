@@ -1,5 +1,6 @@
 [workspace]
 
 members = [
+    "targets/samd21-mini",
     "targets/stm32f072-disco",
 ]
