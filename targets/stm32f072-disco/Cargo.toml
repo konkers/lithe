@@ -12,6 +12,7 @@ semihosting = ["cortex-m-semihosting"]
 cortex-m = "0.6.0"
 cortex-m-rt = "0.6.10"
 cortex-m-rtic = { version = "0.5.5" }
+lithe = { path = "../../lithe" }
 panic-halt = "0.2.0"
 panic-semihosting = "0.5"
 stm32f0xx-hal = { version = "0.17.1", features = ["rt", "stm32f072", "stm32-usbd"] }
