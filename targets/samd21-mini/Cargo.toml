@@ -9,13 +9,15 @@ version = "0.1.0"
 semihosting = ["cortex-m-semihosting"]
 
 [dependencies]
+arrayvec = { version = "0.5.2", default-features = false }
+atsamd-hal = { version = "0.11", features = ["samd21g", "samd21g-rt", "unproven", "usb"] }
 cortex-m = "0.6.0"
 cortex-m-rt = "0.6.10"
 cortex-m-rtic = { version = "0.5.5" }
 embedded-hal = "0.2.3"
+lithe = { path = "../../lithe" }
 panic-halt = "0.2.0"
 panic-semihosting = "0.5"
-atsamd-hal = {version = "0.11", features = ["samd21g", "samd21g-rt", "unproven", "usb"]}
 usb-device = "0.2.5"
 usbd-hid = "0.4.4"
 

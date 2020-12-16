@@ -17,7 +17,7 @@ monitor reset
 
 #break usb_serial::usb_handler
 break HardFault
-break DefaultHandler
+#break DefaultHandler
 
 # OpenOCD
 #target extended-remote :3333

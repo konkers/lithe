@@ -1,6 +1,7 @@
 [workspace]
 
 members = [
+    "lithe",
     "targets/samd21-mini",
     "targets/stm32f072-disco",
 ]
