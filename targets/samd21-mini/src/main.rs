@@ -140,7 +140,7 @@ const APP: () = {
         let tc45 = &clocks.tc4_tc5(&gclk0).unwrap();
         // instantiate a timer objec for the TC4 peripheral
         let mut timer = TimerCounter::tc4_(tc45, dp.TC4, &mut dp.PM);
-        timer.start(2.khz());
+        timer.start(10.khz());
         timer.enable_interrupt();
 
         #[cfg(feature = "semihosting")]
