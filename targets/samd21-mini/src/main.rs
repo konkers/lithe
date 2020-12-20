@@ -11,8 +11,8 @@ use {
         clock::GenericClockController,
         define_pins,
         gpio::{
-            self, Floating, Input, IntoFunction, Pa14, Pa15, Pa2, Pa20, Pa21, Pa4, Pa6, Pa7, Pa8,
-            Pa9, Pb8, Pb9, Port, PullUp,
+            self, Floating, Input, IntoFunction, Pa14, Pa15, Pa16, Pa18, Pa2, Pa20, Pa21, Pa4, Pa6, Pa7, Pa8,
+            Pa9, Pb8, Pb9, Port, PullUp, Output, PushPull,
         },
         prelude::*,
         target_device as pac,
@@ -48,6 +48,8 @@ define_pins!(
     pin button5 = a21,
     pin button6 = a6,
     pin button7 = a7,
+    pin timing_out0 = a18,
+    pin timing_out1 = a16,
     pin usb_dm = a24,
     pin usb_dp = a25,
 );
@@ -70,6 +72,8 @@ const APP: () = {
         button5: Pa21<Input<PullUp>>,
         button6: Pa6<Input<PullUp>>,
         button7: Pa7<Input<PullUp>>,
+        timing_out0: Pa18<Output<PushPull>>,
+        timing_out1: Pa16<Output<PushPull>>,
     }
 
     #[init]
@@ -101,6 +105,8 @@ const APP: () = {
         let button5 = pins.button5.into_pull_up_input(&mut pins.port);
         let button6 = pins.button6.into_pull_up_input(&mut pins.port);
         let button7 = pins.button7.into_pull_up_input(&mut pins.port);
+        let timing_out0 = pins.timing_out0.into_push_pull_output(&mut pins.port);
+        let timing_out1 = pins.timing_out1.into_push_pull_output(&mut pins.port);
 
         let usb_dm = pins.usb_dm.into_function(&mut pins.port);
         let usb_dp = pins.usb_dp.into_function(&mut pins.port);
@@ -161,13 +167,16 @@ const APP: () = {
             button5,
             button6,
             button7,
+            timing_out0,
+            timing_out1,
         }
     }
 
     #[task(binds = TC4, resources = [button0, button1, button2, 
         button3, button4, button5, button6, button7, joy_right, 
-        joy_left, joy_up, joy_down, lithe, timer])]
+        joy_left, joy_up, joy_down, lithe, timing_out0, timer])]
     fn tc4_handler(ctx: tc4_handler::Context) {
+        ctx.resources.timing_out0.set_high().ok();
         let pins = lithe::PinState {
             joy_right: ctx.resources.joy_right.is_low().unwrap(),
             joy_left: ctx.resources.joy_left.is_low().unwrap(),
@@ -189,11 +198,14 @@ const APP: () = {
         //   rprintln!("t: {:?}", &pins);
         ctx.resources.lithe.process_pins(&pins);
         ctx.resources.timer.wait().ok();
+        ctx.resources.timing_out0.set_low().ok();
     }
 
-    #[task(binds = USB, resources = [lithe])]
+    #[task(binds = USB, resources = [lithe, timing_out1])]
     fn usb_handler(ctx: usb_handler::Context) {
+        ctx.resources.timing_out1.set_high().ok();
         ctx.resources.lithe.usb_poll();
+        ctx.resources.timing_out1.set_low().ok();
     }
 };
 
