@@ -49,7 +49,7 @@ impl<'a, USB: UsbBus> Device<'a, USB> {
     pub fn new(bus: &'a UsbBusAllocator<USB>, serial_num: &'a str) -> Self {
         let hid = HIDClass::new(bus, InputReport::desc(), 1);
 
-        let dev = UsbDeviceBuilder::new(bus, UsbVidPid(0, 0x3825))
+        let dev = UsbDeviceBuilder::new(bus, UsbVidPid(0x1209, 0xeeee))
             .manufacturer("Villa Labs")
             .product("Lithe Joystick")
             .serial_number(serial_num)
